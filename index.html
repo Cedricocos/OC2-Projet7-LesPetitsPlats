@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+        
+        <title>Document</title>
+    </head>
+
+    <body>
+        <header>
+            <img src="/media/logo.png" class="logo" alt="Logo Les petits plats"/>
+            <div class="divglobalresearch">
+                <input type="text" id="globalResearch" name="Recherche générale" placeholder="Rechercher une recette" class="lato"/>
+                <img src="/media/loupe.svg" class="loupe"/>
+            </div>
+        </header>
+
+        <main>
+            <section class="tagssection">
+                <div class="ingredientstagdisplaydiv"></div>
+                <div class="appareilstagdisplaydiv"></div>
+                <div class="ustensilestagdisplaydiv"></div>
+            </section>
+            <section id="tags_selector_section">
+                <div class="button blue lato">
+                    <div>
+                        <button class="nodecobtn btntext" id="showIngredientsBtn">Ingrédients</button>
+                        <input type="text" id="tagResearch" data-for="ingredients" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato ">
+                        <button class="nodecobtn">
+                            <img src="media/selectarrow.svg" class="arrow" alt="open menu"/>  
+                        </button>
+                    </div>
+                    <section id="ingredientsList"></section>
+                </div>
+                <div class="button green lato">
+                    <div>
+                        <button class="nodecobtn btntext" id="showAppareilsBtn">Appareils</button>
+                        <input type="text" id="tagResearch" data-for="appareils" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato ">
+                        <button class="nodecobtn">
+                            <img src="media/selectarrow.svg" class="arrow" alt="open menu"/>  
+                        </button>
+                    </div>
+                    <section id="appareilsList"></section>
+                </div>
+                <div class="button red lato">
+                    <div>
+                        <button class="nodecobtn btntext" id="showUstensilesBtn">Ustensiles</button>
+                        <input type="text" id="tagResearch" data-for="ustensiles" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato ">
+                        <button class="nodecobtn">
+                            <img src="media/selectarrow.svg" class="arrow" alt="open menu"/>  
+                        </button>
+                    </div>
+                    <section id="ustensilesList"></section>
+                </div>
+            </section>
+
+            <section id="recipes_section"></section>
+        </main>
+
+        <template id="recipe">
+            <article class="article">
+                <div class="fiche">
+                    <div class="upside">
+                        <h1 class="name lato"></h1>
+                        <div class="divtime">
+                            <img src="/media/horloge.svg" class="horloge"/>
+                            <p class="time lato"></p>
+                        </div>
+                    </div>
+                    <div class="downside">
+                        <div class="ingredientsdiv lato"></div>
+                        <p class="descriptiondiv roboto"></p>
+                    </div>
+                </div>
+            </article>
+        </template>
+
+        <template id="ingredient">
+            <p><span class="ingredient"></span><span class="quantity"></span></p>
+        </template>
+
+        <script type="module" src="/src/index.js"></script>
+    </body>
+</html>

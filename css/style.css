@@ -1,0 +1,341 @@
+@font-face {
+    font-family: "Lato";
+    src: url("../fonts/Lato-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto-Regular.ttf") format("truetype");
+}
+
+.nodecobtn {
+    background: none;
+    border: 0;
+    padding: 0;
+}
+
+.roboto {
+    font-family: 'Roboto';
+    font-style: normal;
+}
+
+.lato {
+    font-family: "Lato";
+    font-style: normal;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 1440px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.logo {
+    width: 268px;
+    height: 93px;
+    margin-top: 42px;
+}
+
+.divglobalresearch {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 17px;
+}
+
+#globalResearch {
+    width: 1216px;
+    padding-left: 24px;
+    height: 69px;
+    background: #E7E7E7;
+    border: 0;
+    border-radius: 5px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.loupe {
+    margin-left: -53px;
+}
+
+#tags_selector_section {
+    margin: 15px 0 0 110px;
+    display: flex;
+    flex-direction: row;
+}
+
+.button {
+    border-radius: 5px;
+    width: 137px;
+    height: 69px;
+    cursor: pointer;
+    margin-right: 20px;
+    padding: 0 15px 0 18px;
+}
+
+.button div {
+    width: 100%;
+    height: 69px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttonopened {
+    width: 667px;
+    height: 397px;
+    z-index: 10;
+}
+
+.blue {
+    background: #3282F7;
+}
+
+.green {
+    background: #68D9A4;
+}
+
+.red {
+    background: #ED6454;
+}
+
+.btntext {
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    padding: 0;
+}
+
+.arrow {
+    text-align: right;
+    cursor: pointer;
+    transform: rotate(-180deg);
+}
+
+.button.uncollapsed .arrow {
+    transform: rotate(0deg);
+}
+
+.button:not(.uncollapsed) section {
+    display: none;
+}
+
+.button.uncollapsed .btntext {
+    display: none;
+}
+
+.button:not(.uncollapsed) input {
+    display: none;
+}
+
+.button.uncollapsed section {
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 310px;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.button.uncollapsed {
+    width: 667px;
+    height: 397px;
+    z-index: 10;
+}
+
+.arrowfocus {
+    transform: rotate(0deg);
+}
+
+.tagssection {
+    display: flex;
+    flex-direction: row;
+    margin-left: 109px;
+    margin-top: 25px;
+}
+
+.ingredientstagdisplaydiv {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.appareilstagdisplaydiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.ustensilestagdisplaydiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.tagbutton {
+    border-radius: 5px;
+    max-width: 170px;
+    height: 37px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    padding: 0 22px 0 20px;
+}
+
+.tagbutton p {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    margin-right: 13px;
+    color: white;
+}
+
+#tagResearch {
+    width: 80%;
+    background: none;
+    border: 0;
+    font-size: 18px;
+    line-height: 22px;
+    color: white;
+    border-radius: 5px;
+}
+
+#tagResearch::-webkit-scrollbar {
+    display: none;
+  }
+
+#tagResearch:focus-visible {
+    outline: 0;
+}
+
+#tagResearch::placeholder {
+    color: white;
+    opacity: 0.5
+}
+
+.decotag {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: white;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+#recipes_section {
+    position: absolute;
+    margin: 0 90px 0 110px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 50px;
+    top: 392px;
+    width: 1240px;
+}
+
+.errormessage {
+    color: red;
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.article {
+    width: 380px;
+    height: 364px;
+    background: #C7BEBE;
+    border-radius: 5px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.fiche {
+    padding: 20px;
+    width: 100%;
+    height: 146px;
+    background: #E7E7E7;
+    border-radius: 0 0 5px 5px;
+}
+
+.upside {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.name {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0;
+    max-width: 70%;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.divtime {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.horloge {
+    width: 20px;
+    height: 20px;
+    margin-right: 7px;
+}
+
+.time {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0;
+}
+
+.downside {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    align-items: flex-start;
+}
+
+.ingredientsdiv {
+    margin: 0;
+    width: 50%;
+}
+
+.ingredientsdiv p {
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0;
+}
+
+.ingredient {
+    font-weight: 700;
+}
+
+.descriptiondiv {
+    width: 50%;
+    margin: 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
