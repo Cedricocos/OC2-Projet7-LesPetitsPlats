@@ -14,50 +14,50 @@
             <img src="/media/logo.png" class="logo" alt="Logo Les petits plats"/>
             <div class="divglobalresearch">
                 <input type="text" id="globalResearch" name="Recherche générale" placeholder="Rechercher une recette" class="lato"/>
-                <img src="/media/loupe.svg" class="loupe"/>
+                <img src="/media/loupe.svg" class="loupe" alt="global research"/>
             </div>
         </header>
 
         <main>
-            <section class="tagssection">
+            <div class="tagssection">
                 <div class="ingredientstagdisplaydiv"></div>
                 <div class="appareilstagdisplaydiv"></div>
                 <div class="ustensilestagdisplaydiv"></div>
-            </section>
-            <section id="tags_selector_section">
+            </div>
+            <div id="tags_selector_section">
                 <div class="button blue lato">
-                    <div>
+                    <div class="headsearch">
                         <button class="nodecobtn btntext" id="showIngredientsBtn">Ingrédients</button>
-                        <input type="text" id="tagResearch" data-for="ingredients" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato ">
+                        <input type="text" data-for="ingredients" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato tagresearch">
                         <button class="nodecobtn">
                             <img src="media/selectarrow.svg" class="arrow" alt="open menu"/>  
                         </button>
                     </div>
-                    <section id="ingredientsList"></section>
+                    <div id="ingredientsList" class="list"></div>
                 </div>
                 <div class="button green lato">
-                    <div>
+                    <div class="headsearch">
                         <button class="nodecobtn btntext" id="showAppareilsBtn">Appareils</button>
-                        <input type="text" id="tagResearch" data-for="appareils" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato ">
+                        <input type="text" data-for="appareils" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato tagresearch">
                         <button class="nodecobtn">
                             <img src="media/selectarrow.svg" class="arrow" alt="open menu"/>  
                         </button>
                     </div>
-                    <section id="appareilsList"></section>
+                    <div id="appareilsList" class="list"></div>
                 </div>
                 <div class="button red lato">
-                    <div>
+                    <div class="headsearch">
                         <button class="nodecobtn btntext" id="showUstensilesBtn">Ustensiles</button>
-                        <input type="text" id="tagResearch" data-for="ustensiles" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato ">
+                        <input type="text" data-for="ustensiles" name="Recherche de Tags" placeholder="Rechercher un ingrédient" class="lato tagresearch">
                         <button class="nodecobtn">
                             <img src="media/selectarrow.svg" class="arrow" alt="open menu"/>  
                         </button>
                     </div>
-                    <section id="ustensilesList"></section>
+                    <div id="ustensilesList" class="list"></div>
                 </div>
-            </section>
+            </div>
 
-            <section id="recipes_section"></section>
+            <div id="recipes_section"></div>
         </main>
 
         <template id="recipe">
@@ -66,7 +66,7 @@
                     <div class="upside">
                         <h1 class="name lato"></h1>
                         <div class="divtime">
-                            <img src="/media/horloge.svg" class="horloge"/>
+                            <img src="/media/horloge.svg" class="horloge" alt="time logo"/>
                             <p class="time lato"></p>
                         </div>
                     </div>

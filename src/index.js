@@ -1,6 +1,11 @@
-import { filterRecipes } from './algo_imperatif.js';
+import { filterRecipes } from './algo_fonctionnel.js';
 import {recipes} from '../data/recipes.js';
 sessionStorage.clear();
+sessionStorage.setItem('tags', JSON.stringify({
+    ingredientsTags: [],
+    appareilsTags: [],
+    ustensilesTags: []
+}));
 
 //----------------------------------------------------------- AFFICHER LES RECETTES A PARTIR DU TABLEAU LES CONTENANT ------------------------------------------//
 function displayRecipes(recipesToDisplay) {
@@ -58,12 +63,11 @@ globalInput.addEventListener("input", (event) => {
         displayRecipes(filteredRecipes);
     }
 });
-//-------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
 
 //-------------------------------------------------------------- LIRE L'INPUT TAGS POUR CHERCHER DES TAGS ---------------------------------------------//
-const tagsInputArray = document.querySelectorAll("#tagResearch")
+const tagsInputArray = document.querySelectorAll(".tagresearch")
 tagsInputArray.forEach((input) => {
     input.addEventListener("input", (event) => {
         const data = input.getAttribute("data-for");
@@ -71,11 +75,15 @@ tagsInputArray.forEach((input) => {
             tagsResearch(event.target.value, data)
         } else {
             const tags = takeTags(recipes);
-            displayTags(tags);
+            displayIngredients(tags);
+            displayAppareils(tags);
+            displayUstensiles(tags);
         }
     })
 })
+//-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
+//-------------------------------------------------------------- FONCTION POUR CHERCHER DES TAGS ------------------------------------------------------//
 async function tagsResearch(research, data) {
     const tags = await takeTags(recipes);
     const ingredients = [];
@@ -90,6 +98,10 @@ async function tagsResearch(research, data) {
                 ingredients.push(ingredient);
             }
         })
+        const result = {
+            ingredients: ingredients
+        }
+        displayIngredients(result)
     } else if (data === "appareils") {
         tags.appareils.forEach((appareil) => {
             const appareilName = appareil.toLowerCase();
@@ -99,6 +111,10 @@ async function tagsResearch(research, data) {
                 appareils.push(appareil);
             }
         })
+        const result = {
+            appareils: appareils
+        }
+        displayAppareils(result)
     } else if (data === "ustensiles") {
         tags.ustensiles.forEach((ustensile) => {
             const ustensileName = ustensile.toLowerCase();
@@ -108,25 +124,15 @@ async function tagsResearch(research, data) {
                 ustensiles.push(ustensile);
             }
         })
+        const result = {
+            ustensiles: ustensiles
+        }
+        displayUstensiles(result)
     }
-    const result = {
-        ingredients: ingredients,
-        appareils: appareils,
-        ustensiles: ustensiles
-    }
-    displayTags(result)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
-
-// POUR LES TAGS
-// au clic sur le bouton, ouvrir un input et recuperer liste ingredients
-// Lorsqu'on clique sur un ingredient (donc c'est des btns) : 
-// - on vient récuperer la data du btn
-// - l'ajouter à un tableau Tags avec une entrée par rapport à la catégorie (ingrédient, appareil ou ustensile)
-// - le mettre dans la section contenant les tags (ajouter la couleur en fonction du tag)
-// - Mettre une petite croix qui vient retirer le tag en html, puis qui va chercher le tag dans le tableau et le supprimer avec un filter
-
+//------------------------------------------------------ OUVRIR LES SELECTEURS DE TAGS ------------------------------------------------------------------//
 const showIngredientsArrow = document.querySelector(".blue .arrow");
 const showAppareilsArrow = document.querySelector(".green .arrow");
 const showUstensilesArrow = document.querySelector(".red .arrow");
@@ -136,8 +142,7 @@ const ustdiv = document.querySelector(".red");
 let ingclicked = false;
 let appclicked = false;
 let ustclicked = false;
-
-showIngredientsArrow.addEventListener("click", function (event) {    
+showIngredientsArrow.addEventListener("click", () => {    
     if (ingclicked === true) {
         ingdiv.classList.remove('uncollapsed');
         ingclicked = false;
@@ -150,8 +155,7 @@ showIngredientsArrow.addEventListener("click", function (event) {
         ustclicked = false;
     }
 })
-
-showAppareilsArrow.addEventListener("click", function () {
+showAppareilsArrow.addEventListener("click", () => {
     if (appclicked === true) {
         appdiv.classList.remove('uncollapsed');
         appclicked = false;
@@ -164,8 +168,7 @@ showAppareilsArrow.addEventListener("click", function () {
         ustclicked = false;
     }
 })
-
-showUstensilesArrow.addEventListener("click", function () {
+showUstensilesArrow.addEventListener("click", () => {
     if (ustclicked === true) {
         ustdiv.classList.remove('uncollapsed');
         ustclicked = false;
@@ -178,13 +181,13 @@ showUstensilesArrow.addEventListener("click", function () {
         ustclicked = true;
     }
 })
+//-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------------------- RÉCUPERER TOUT LES TAGS ------------------------------------------------------------------//
 function takeTags(recipes) {
-
     const ingredients = [];
     const appareils = [];
     const ustensiles = [];
-
     recipes.forEach(function(recipe) {
         recipe.ingredients.forEach(function(ingredient) {
             ingredients.push(ingredient.ingredient)
@@ -194,50 +197,52 @@ function takeTags(recipes) {
             ustensiles.push(ustensile)
         });
     });
-
     const filteredIngredients = arrayFilter(ingredients);
     const filteredAppareils = arrayFilter(appareils);
     const filteredUstensiles = arrayFilter(ustensiles);
-
     return {
         ingredients: filteredIngredients,
         appareils: filteredAppareils,
         ustensiles: filteredUstensiles
     }
-};
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------------------- FILTRER TOUT LES TAGS POUR RETIRER LES DOUBLES ------------------------------------------------------------------//
 function arrayFilter(sourceArray) {
     return sourceArray.filter((item, index) => {
         const arrayLowerCased = sourceArray.map(item => item.toLowerCase())
         return arrayLowerCased.indexOf(item.toLowerCase()) == index;
     });
 }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
-// Separer en displayIngredients, displayAppareils... etc
-function displayTags(tags) {
-    const tagsArray = {
-        ingredientsTags: [],
-        appareilsTags: [],
-        ustensilesTags: []
-    }
+//--------------------------------------------------------- AFFICHER LES TAGS DANS LEUR SELECTOR ------------------------------------------------------------------//
+function displayIngredients(tags) {
+    const tagsArray = JSON.parse(sessionStorage.getItem('tags'));
     const ingredientsSection = document.querySelector("#ingredientsList");
-    const appareilsSection = document.querySelector("#appareilsList");
-    const ustensilesSection = document.querySelector("#ustensilesList");
     ingredientsSection.innerHTML = "";
-    appareilsSection.innerHTML = "";
-    ustensilesSection.innerHTML = "";
     tags.ingredients.forEach((ingredient) => {
-        addTagInTagList(ingredient, ingredientsSection, tagsArray.ingredientsTags, tagsArray);
+        addTagInTagList(ingredient, ingredientsSection, tagsArray.ingredientsTags, "ing");
     })
+} 
+function displayAppareils(tags) {
+    const tagsArray = JSON.parse(sessionStorage.getItem('tags'));
+    const appareilsSection = document.querySelector("#appareilsList");
+    appareilsSection.innerHTML = "";
     tags.appareils.forEach((appareil) => {
-        addTagInTagList(appareil, appareilsSection, tagsArray.appareilsTags, tagsArray);
-    })
-    tags.ustensiles.forEach((ustensile) => {
-        addTagInTagList(ustensile, ustensilesSection, tagsArray.ustensilesTags, tagsArray);
+        addTagInTagList(appareil, appareilsSection, tagsArray.appareilsTags, "app");
     })
 }
-
-function addTagInTagList(tag, section, array, object) {
+function displayUstensiles(tags) {
+    const tagsArray = JSON.parse(sessionStorage.getItem('tags'));
+    const ustensilesSection = document.querySelector("#ustensilesList");
+    ustensilesSection.innerHTML = "";
+    tags.ustensiles.forEach((ustensile) => {
+        addTagInTagList(ustensile, ustensilesSection, tagsArray.ustensilesTags, "ust");
+    })
+}
+function addTagInTagList(tag, section, array, which) {
     const btn = document.createElement("button");
     btn.classList.add("decotag");
     btn.classList.add("lato");
@@ -255,18 +260,25 @@ function addTagInTagList(tag, section, array, object) {
         if (present === true) {
             present = false;
         } else {
-            array.push(name)
+            const object = JSON.parse(sessionStorage.getItem('tags'));
+            if (which === "ing") {
+                object.ingredientsTags.push(tag)
+            } else if (which === "app") {
+                object.appareilsTags.push(tag)
+            } else if (which === "ust") {
+                object.ustensilesTags.push(tag)
+            }
             sessionStorage.setItem('tags', JSON.stringify(object));
             const inputValue = document.querySelector("#globalResearch").value
-            console.log(object)
             const recipesToDisplay = filterRecipes(recipes, inputValue, object)
             displayRecipes(recipesToDisplay)
             displayTagsInTagsSection(object);
         }
-        // console.log(array)
     })
 }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------------------- AFFICHER LES TAGS ACTIFS DANS LEUR SECTION ------------------------------------------------------------------//
 function displayTagsInTagsSection(array) {
     const ingdiv = document.querySelector(".ingredientstagdisplaydiv");
     const appdiv = document.querySelector(".appareilstagdisplaydiv");
@@ -274,69 +286,72 @@ function displayTagsInTagsSection(array) {
     ingdiv.innerHTML = "";
     appdiv.innerHTML = "";
     ustdiv.innerHTML = "";
-    // console.log(array)
-
-    array.ingredientsTags.forEach((ingredientTag) => {
-        const divbutton = document.createElement("div");
-        divbutton.classList.add("tagbutton");
-        divbutton.classList.add("blue");
-        const name = document.createElement("p");
-        name.innerHTML = ingredientTag;
-        divbutton.appendChild(name);
-        const close = document.createElement("img");
-        close.setAttribute('src', '../media/close.svg');
-        close.setAttribute('data-category', 'ingredient');
-        close.setAttribute('data-for', ingredientTag);
-        close.classList.add('closetag');
-        close.addEventListener('click', () => {
-            deleteTag(array, "ing", ingredientTag);
-        })
-        divbutton.appendChild(close);
-        ingdiv.appendChild(divbutton);
-    });
-    array.appareilsTags.forEach((appareilTag) => {
-        const divbutton = document.createElement("div");
-        divbutton.classList.add("tagbutton");
-        divbutton.classList.add("green");
-        const name = document.createElement("p");
-        name.innerHTML = appareilTag;
-        divbutton.appendChild(name);
-        const close = document.createElement("img");
-        close.setAttribute('src', '../media/close.svg');
-        close.setAttribute('data-category', 'appareil');
-        close.setAttribute('data-for', appareilTag);
-        close.classList.add('closetag');
-        close.addEventListener('click', () => {
-            deleteTag(array, "app", appareilTag);
-        })
-        divbutton.appendChild(close);
-        appdiv.appendChild(divbutton);
-    });
-    array.ustensilesTags.forEach((ustensileTag) => {
-        const divbutton = document.createElement("div");
-        divbutton.classList.add("tagbutton");
-        divbutton.classList.add("red");
-        const name = document.createElement("p");
-        name.innerHTML = ustensileTag;
-        divbutton.appendChild(name);
-        const close = document.createElement("img");
-        close.setAttribute('src', '../media/close.svg');
-        close.setAttribute('data-category', 'ustensile');
-        close.setAttribute('data-for', ustensileTag);
-        close.classList.add('closetag');
-        close.addEventListener('click', () => {
-            deleteTag(array, "ust", ustensileTag);
-        })
-        divbutton.appendChild(close);
-        ustdiv.appendChild(divbutton);
-    });
-
-    // console.log(array);
+    if (array?.ingredientsTags) {
+        array.ingredientsTags.forEach((ingredientTag) => {
+            const divbutton = document.createElement("div");
+            divbutton.classList.add("tagbutton");
+            divbutton.classList.add("blue");
+            const name = document.createElement("p");
+            name.innerHTML = ingredientTag;
+            divbutton.appendChild(name);
+            const close = document.createElement("img");
+            close.setAttribute('src', '../media/close.svg');
+            close.setAttribute('data-category', 'ingredient');
+            close.setAttribute('data-for', ingredientTag);
+            close.classList.add('closetag');
+            close.addEventListener('click', () => {
+                deleteTag(array, "ing", ingredientTag);
+            })
+            divbutton.appendChild(close);
+            ingdiv.appendChild(divbutton);
+        });
+    }
+    if (array?.appareilsTags) {
+        array.appareilsTags.forEach((appareilTag) => {
+            const divbutton = document.createElement("div");
+            divbutton.classList.add("tagbutton");
+            divbutton.classList.add("green");
+            const name = document.createElement("p");
+            name.innerHTML = appareilTag;
+            divbutton.appendChild(name);
+            const close = document.createElement("img");
+            close.setAttribute('src', '../media/close.svg');
+            close.setAttribute('data-category', 'appareil');
+            close.setAttribute('data-for', appareilTag);
+            close.classList.add('closetag');
+            close.addEventListener('click', () => {
+                deleteTag(array, "app", appareilTag);
+            })
+            divbutton.appendChild(close);
+            appdiv.appendChild(divbutton);
+        });
+    }
+    if (array?.ustensilesTags) {
+        array.ustensilesTags.forEach((ustensileTag) => {
+            const divbutton = document.createElement("div");
+            divbutton.classList.add("tagbutton");
+            divbutton.classList.add("red");
+            const name = document.createElement("p");
+            name.innerHTML = ustensileTag;
+            divbutton.appendChild(name);
+            const close = document.createElement("img");
+            close.setAttribute('src', '../media/close.svg');
+            close.setAttribute('data-category', 'ustensile');
+            close.setAttribute('data-for', ustensileTag);
+            close.classList.add('closetag');
+            close.addEventListener('click', () => {
+                deleteTag(array, "ust", ustensileTag);
+            })
+            divbutton.appendChild(close);
+            ustdiv.appendChild(divbutton);
+        });
+    }
 }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
+//--------------------------------------------------------- SUPPRIMER LES TAGS ACTIFS DANS LEUR SECTION ------------------------------------------------------------------//
 function deleteTag(array, category, tag) {
     let arrayToModify;
-
     if (category === "ing") {
         arrayToModify = array.ingredientsTags;
     } else if (category === "app") {
@@ -344,14 +359,10 @@ function deleteTag(array, category, tag) {
     } else if (category === "ust") {
         arrayToModify = array.ustensilesTags;
     }
-
     let index = arrayToModify.indexOf(tag);
     if (index !== -1) {
         arrayToModify.splice(index, 1)
-        console.log(arrayToModify);
-        console.log('couic')
     }
-
     if (category === "ing") {
         array.ingredientsTags = arrayToModify;
     } else if (category === "app") {
@@ -359,19 +370,20 @@ function deleteTag(array, category, tag) {
     } else if (category === "ust") {
         array.ustensilesTags = arrayToModify;
     }
-
     sessionStorage.setItem('tags', JSON.stringify(array))
     const inputValue = document.querySelector("#globalResearch").value
     const recipesToDisplay = filterRecipes(recipes, inputValue, array)
     displayRecipes(recipesToDisplay)
-
     displayTagsInTagsSection(array)
 }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 async function init() {
     displayRecipes(recipes);
     const tags = await takeTags(recipes);
-    displayTags(tags);
+    displayIngredients(tags);
+    displayAppareils(tags);
+    displayUstensiles(tags);
 }
 
 init();

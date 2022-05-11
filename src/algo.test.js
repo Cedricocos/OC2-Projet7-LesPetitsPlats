@@ -1,4 +1,4 @@
-import { filterRecipes } from "./algo_imperatif"
+import { filterRecipes } from "./algo_fonctionnel"
 
 const recipes = [    {
     "id": 1,

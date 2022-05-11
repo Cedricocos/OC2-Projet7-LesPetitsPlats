@@ -75,12 +75,11 @@ header {
     border-radius: 5px;
     width: 137px;
     height: 69px;
-    cursor: pointer;
     margin-right: 20px;
     padding: 0 15px 0 18px;
 }
 
-.button div {
+.button .headsearch {
     width: 100%;
     height: 69px;
     display: flex;
@@ -124,7 +123,7 @@ header {
     transform: rotate(0deg);
 }
 
-.button:not(.uncollapsed) section {
+.button:not(.uncollapsed) .list {
     display: none;
 }
 
@@ -136,7 +135,7 @@ header {
     display: none;
 }
 
-.button.uncollapsed section {
+.button.uncollapsed .list {
     overflow: hidden;
     overflow-y: auto;
     max-height: 310px;
@@ -199,7 +198,11 @@ header {
     color: white;
 }
 
-#tagResearch {
+.closetag {
+    cursor: pointer;
+}
+
+.tagresearch {
     width: 80%;
     background: none;
     border: 0;
@@ -209,15 +212,15 @@ header {
     border-radius: 5px;
 }
 
-#tagResearch::-webkit-scrollbar {
+.tagresearch::-webkit-scrollbar {
     display: none;
   }
 
-#tagResearch:focus-visible {
+.tagresearch:focus-visible {
     outline: 0;
 }
 
-#tagResearch::placeholder {
+.tagresearch::placeholder {
     color: white;
     opacity: 0.5
 }
