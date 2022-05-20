@@ -219,30 +219,27 @@ function arrayFilter(sourceArray) {
 
 //--------------------------------------------------------- AFFICHER LES TAGS DANS LEUR SELECTOR ------------------------------------------------------------------//
 function displayIngredients(tags) {
-    const tagsArray = JSON.parse(sessionStorage.getItem('tags'));
     const ingredientsSection = document.querySelector("#ingredientsList");
     ingredientsSection.innerHTML = "";
     tags.ingredients.forEach((ingredient) => {
-        addTagInTagList(ingredient, ingredientsSection, tagsArray.ingredientsTags, "ing");
+        addTagInTagList(ingredient, ingredientsSection, "ing");
     })
 } 
 function displayAppareils(tags) {
-    const tagsArray = JSON.parse(sessionStorage.getItem('tags'));
     const appareilsSection = document.querySelector("#appareilsList");
     appareilsSection.innerHTML = "";
     tags.appareils.forEach((appareil) => {
-        addTagInTagList(appareil, appareilsSection, tagsArray.appareilsTags, "app");
+        addTagInTagList(appareil, appareilsSection, "app");
     })
 }
 function displayUstensiles(tags) {
-    const tagsArray = JSON.parse(sessionStorage.getItem('tags'));
     const ustensilesSection = document.querySelector("#ustensilesList");
     ustensilesSection.innerHTML = "";
     tags.ustensiles.forEach((ustensile) => {
-        addTagInTagList(ustensile, ustensilesSection, tagsArray.ustensilesTags, "ust");
+        addTagInTagList(ustensile, ustensilesSection, "ust");
     })
 }
-function addTagInTagList(tag, section, array, which) {
+function addTagInTagList(tag, section, which) {
     const btn = document.createElement("button");
     btn.classList.add("decotag");
     btn.classList.add("lato");
@@ -250,6 +247,14 @@ function addTagInTagList(tag, section, array, which) {
     btn.setAttribute("data-name", tag);
     section.appendChild(btn)
     btn.addEventListener("click", function () {
+        let array;
+        if (which === "ing") {
+            array = JSON.parse(sessionStorage.getItem('tags')).ingredientsTags;
+        } else if (which === "app") {
+            array = JSON.parse(sessionStorage.getItem('tags')).appareilsTags;
+        } else if (which === "ust") {
+            array = JSON.parse(sessionStorage.getItem('tags')).ustensilesTags;
+        }
         const name = btn.getAttribute("data-name")
         let present = false;
         for (let i = 0; i < array.length; i++) {
@@ -257,6 +262,9 @@ function addTagInTagList(tag, section, array, which) {
                 present = true;
             }
         }
+        console.log(array)
+        console.log(present)
+        console.log(which)
         if (present === true) {
             present = false;
         } else {
