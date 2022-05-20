@@ -247,6 +247,15 @@ function addTagInTagList(tag, section, which) {
     btn.setAttribute("data-name", tag);
     section.appendChild(btn)
     btn.addEventListener("click", function () {
+        const tagsInputsArray = document.querySelectorAll(".tagresearch");
+        for (const tagsInput of tagsInputsArray) {
+            tagsInput.value = ""
+        }
+        tagsResearch("", "ingredients");
+        tagsResearch("", "appareils");
+        tagsResearch("", "ustensiles");
+
+
         let array;
         if (which === "ing") {
             array = JSON.parse(sessionStorage.getItem('tags')).ingredientsTags;
