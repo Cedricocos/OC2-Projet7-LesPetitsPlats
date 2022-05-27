@@ -57,11 +57,11 @@ globalInput.addEventListener("input", (event) => {
     const tags = sessionStorage.getItem('tags');
     if (event.target.value.length >= 3) {
         const filteredRecipes = filterRecipes(recipes, event.target.value, JSON.parse(tags));
-        displayRecipes(filteredRecipes);
+        updateRecipesAndTagsLists(filteredRecipes);
     } else {
         const filteredRecipes = filterRecipes(recipes, "", JSON.parse(tags));
-        displayRecipes(filteredRecipes);
-    }
+        updateRecipesAndTagsLists(filteredRecipes);
+}
 });
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -72,63 +72,38 @@ tagsInputArray.forEach((input) => {
     input.addEventListener("input", (event) => {
         const data = input.getAttribute("data-for");
         if (event.target.value.length >= 3) {
-            tagsResearch(event.target.value, data)
+            const tags = sessionStorage.getItem('tags');
+            const filteredRecipes = filterRecipes(recipes, event.target.value, JSON.parse(tags));
+            tagsResearch(event.target.value, data, filteredRecipes)
         } else {
-            const tags = takeTags(recipes);
-            displayIngredients(tags);
-            displayAppareils(tags);
-            displayUstensiles(tags);
+            const tags = sessionStorage.getItem('tags');
+            const filteredRecipes = filterRecipes(recipes, event.target.value, JSON.parse(tags));
+            const newtags = takeTags(filteredRecipes);
+            displayIngredients(newtags);
+            displayAppareils(newtags);
+            displayUstensiles(newtags);
         }
     })
 })
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
 //-------------------------------------------------------------- FONCTION POUR CHERCHER DES TAGS ------------------------------------------------------//
-async function tagsResearch(research, data) {
+async function tagsResearch(research, tagType, recipes) {
     const tags = await takeTags(recipes);
-    const ingredients = [];
-    const appareils = [];
-    const ustensiles = [];
-    if (data === "ingredients") {
-        tags.ingredients.forEach((ingredient) => {
-            const ingredientName = ingredient.toLowerCase();
-            const researchValue = research.toLowerCase();
-            var index = ingredientName.indexOf(researchValue);
-            if (index !== -1) {
-                ingredients.push(ingredient);
-            }
-        })
-        const result = {
-            ingredients: ingredients
+    const array = [];
+    tags[tagType].forEach((tag) => {
+        const tagName = tag.toLowerCase();
+        const researchValue = research.toLowerCase();
+        var index = tagName.indexOf(researchValue);
+        if (index !== -1) {
+            array.push(tag);
         }
-        displayIngredients(result)
-    } else if (data === "appareils") {
-        tags.appareils.forEach((appareil) => {
-            const appareilName = appareil.toLowerCase();
-            const researchValue = research.toLowerCase();
-            var index = appareilName.indexOf(researchValue);
-            if (index !== -1) {
-                appareils.push(appareil);
-            }
-        })
-        const result = {
-            appareils: appareils
-        }
-        displayAppareils(result)
-    } else if (data === "ustensiles") {
-        tags.ustensiles.forEach((ustensile) => {
-            const ustensileName = ustensile.toLowerCase();
-            const researchValue = research.toLowerCase();
-            var index = ustensileName.indexOf(researchValue);
-            if (index !== -1) {
-                ustensiles.push(ustensile);
-            }
-        })
-        const result = {
-            ustensiles: ustensiles
-        }
-        displayUstensiles(result)
+    })
+    const result = {
+        [tagType]: array
     }
+    const displayFunction = tagType === 'ingredients' ? displayIngredients : tagType === 'appareils' ? displayAppareils : displayUstensils
+    displayFunction(result)
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -251,11 +226,6 @@ function addTagInTagList(tag, section, which) {
         for (const tagsInput of tagsInputsArray) {
             tagsInput.value = ""
         }
-        tagsResearch("", "ingredients");
-        tagsResearch("", "appareils");
-        tagsResearch("", "ustensiles");
-
-
         let array;
         if (which === "ing") {
             array = JSON.parse(sessionStorage.getItem('tags')).ingredientsTags;
@@ -271,9 +241,6 @@ function addTagInTagList(tag, section, which) {
                 present = true;
             }
         }
-        console.log(array)
-        console.log(present)
-        console.log(which)
         if (present === true) {
             present = false;
         } else {
@@ -288,8 +255,9 @@ function addTagInTagList(tag, section, which) {
             sessionStorage.setItem('tags', JSON.stringify(object));
             const inputValue = document.querySelector("#globalResearch").value
             const recipesToDisplay = filterRecipes(recipes, inputValue, object)
-            displayRecipes(recipesToDisplay)
+            
             displayTagsInTagsSection(object);
+            updateRecipesAndTagsLists(recipesToDisplay);
         }
     })
 }
@@ -390,10 +358,20 @@ function deleteTag(array, category, tag) {
     sessionStorage.setItem('tags', JSON.stringify(array))
     const inputValue = document.querySelector("#globalResearch").value
     const recipesToDisplay = filterRecipes(recipes, inputValue, array)
-    displayRecipes(recipesToDisplay)
     displayTagsInTagsSection(array)
+    updateRecipesAndTagsLists(recipesToDisplay)
 }
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+function updateRecipesAndTagsLists(recipesToUpdate) {
+    displayRecipes(recipesToUpdate)
+    const newTags = takeTags(recipesToUpdate);
+    console.log(newTags)
+    displayIngredients(newTags);
+    displayAppareils(newTags);
+    displayUstensiles(newTags);
+}
 
 async function init() {
     displayRecipes(recipes);
