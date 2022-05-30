@@ -1,4 +1,4 @@
-import { filterRecipes } from './algo_fonctionnel.js';
+import { filterRecipes } from './algo_imperatif.js';
 import {recipes} from '../data/recipes.js';
 sessionStorage.clear();
 sessionStorage.setItem('tags', JSON.stringify({
